@@ -11,21 +11,26 @@
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
+	<div class="editor-mode edition-tools"><img src="./assets/icons/modify-icon.png" alt="icon modify" srcset="" class="modify-icon"><p>Mode édition</p><button class="submit-changes">publier les changements</button> <button class="close-edition-mode">Quiter le mode edition</button></div>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<li>login</li>
+			<li><a href="./login.html">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
 </header>
+<p class="error-notification"></p>
+<p class="success-notification"></p>
 <main>
 	<section id="introduction">
 		<figure>
-			<img src="./assets/images/sophie-bluel.png" alt="">
+			<img src="./assets/images/sophie-bluel.png" alt="" class="testclick">
+			<div class="modify edition-tools"> <img src="./assets/icons/black-icon.png" alt="" srcset="" class="modify-icon"><p>modifier</p></div>
+			
 		</figure>
 		<article>
 			<h2>Designer d'espace</h2>
@@ -34,54 +39,22 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
+
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
-		<div class="gallery">
-			<figure>
-				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-				<figcaption>Abajour Tahina</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-				<figcaption>Appartement Paris V</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-				<figcaption>Restaurant Sushisen - Londres</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-				<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-				<figcaption>Structures Thermopolis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-				<figcaption>Appartement Paris X</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-				<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-				<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-				<figcaption>Appartement Paris XVIII</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-				<figcaption>Bar “Lullaby” - Paris</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-				<figcaption>Hotel First Arte - New Delhi</figcaption>
-			</figure>
+		<div class="projects-title-edition">
+			<h2>Mes Projets</h2>
+			<div class="modify edition-tools gallery-settings"> <img src="./assets/icons/black-icon.png" alt="" srcset="" class="modify-icon"><p>modifier</p></div>
 		</div>
+		<div class="filter-categories">
+			<ul>
+				<li><input type="button" value="Tous" id="0" class="filter-btn btn-active" class="filter-btn"></li>
+				<li><input type="button" value="Objets" id="1" class="filter-btn"></li>
+				<li><input type="button" value="Appartements" id="2" class="filter-btn"></li>
+				<li><input type="button" value="Hôtels & restaurants" id="3" class="filter-btn"></li>
+			</ul>	
+		</div>
+		<div class="gallery">
+		</div> 
 	</section>
 	<section id="contact">
 		<h2>Contact</h2>
@@ -105,5 +78,44 @@
 		</ul>
 	</nav>
 </footer>
+<div class="overlay hidden"></div>
+<form action="#" method="POST" class="modale hidden">
+	<p class="close-button">X</p>
+	<h3>Galerie photo</h3>
+	<div class="modale-gallery">	
+	</div>
+	<hr>
+	<input type="button" value="Ajouter une photo" class="add-btn">
+	<input type="button" value="Supprimer la galerie" class="delete-btn">
+</form>
+<form action="#" method="post" class="add-picture-form hidden">
+	<div class="top-buttons">
+		<div class="go-back go-back-add-form-btn">&larr;</div>
+		<div class="close-button close-add-form-btn">x</div>
+	</div>
+	<fieldset class="part-one">
+		<legend>Ajout photo</legend>
+		<div class="photo-wrapper">
+			<img src="./assets/icons/img-placeholder.png" alt="" srcset="" class="img-placeholder">
+			<input type="button" value=" + Ajouter une photo" class="add-picture-btn">
+			<input type="file" name="file-upload" id="file-upload" class="hidden">
+			<h6 class="file-formats-legend">jpg, png :  4mo max</h6>
+		</div>
+	</fieldset>
+	<fieldset class="part-two">
+		<label for="title">Title</label>
+		<input type="text" name="title" id="title">
+		<label for="categorie">Catégorie</label>
+		<select name="categorie" id="categorie">
+			<option value="0" disabled selected>Sélectionnez la catégorie : </option>
+			<option value="1">Objets</option>
+			<option value="2">Appartements</option>
+			<option value="3"> Hotels & restaurants</option>
+		</select>
+	</fieldset>
+	<hr>
+	<input type="submit" value="Valider" class="validate-btn" disabled>
+</form>
+<script src="script.js"></script>
 </body>
 </html>

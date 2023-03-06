@@ -31,6 +31,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 }
+
 ol, ul {
 	list-style: none;
 }
@@ -50,13 +51,36 @@ table {
 body {
 	max-width: 1140px;
 	margin:auto;
-	font-family: 'Work Sans' ;
+	font-family: 'Work Sans';
 	font-size: 14px;
 }
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 12vh 0 0 0;
+}
+a{
+	text-decoration: none;
+	color: black;
+}
+
+.error-notification, .success-notification{
+	position: fixed;
+	z-index: 99;
+	top: 0;
+	left: .1%;
+	width: 98vw;
+	text-align: center;
+	padding: 13px;
+	font-size: 1.3rem;
+	background-color: #B1663C;
+	color: white;
+	font-weight: bold;
+	display: none;
+}
+.success-notification{
+	background-color: #1D6154;
+
 }
 section {
 	margin: 50px 0
@@ -68,7 +92,7 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
 }
 
 h1 > span {
@@ -82,7 +106,7 @@ h2{
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
-	color: #1D6154
+	color: #1D6154;
 }
 nav ul {
 	display: flex;
@@ -121,9 +145,110 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
+.editor-mode{
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	background-color: black;
+	width: 100vw;
+	padding: 10px;
+}
+
+#introduction .modify{
+	margin: 2vh 0 0 8vh;
+}
+.modify{
+	display: flex;
+	justify-content: left;
+	width: fit-content;
+	cursor: pointer;
+}
+.modify p{
+	line-height: 150%;
+}
+.modify .modify-icon{
+	max-width: 18px;
+	height: 20px;
+	display: inline;
+	margin: 0 10px 0 0 !important;
+}
+.modify-icon{
+	width: 20px;
+	height: 20px;
+}
+.editor-mode img{
+	margin: 6px 13px 0 0;
+}
+.editor-mode p, .editor-mode button{
+	color: white;
+	display: inline;
+	align-items: center;
+	margin: 0 1vw 0 0;
+}
+.editor-mode p{
+	line-height: 250%;
+}
+.editor-mode button{
+	background-color: white;
+	color: black;
+	border-radius: 30px;
+	font-size: .9rem;
+	padding: 10px 25px;
+	border: none;
+	cursor: pointer;
+}
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
+}
+.projects-title-edition{
+	display: flex;
+	justify-content: center;
+}
+.projects-title-edition .modify{
+	margin: .6vh 0 0 2vw;
+}
+
+
+.hidden{
+	display: none;
+}
+
+/*---------- FILTERS ----------- */
+.filter-categories{
+	margin: 0 auto 5vh auto;
+}
+.filter-categories ul{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.filter-categories ul li input[type=button], .modale input[type=button], .add-picture-form .validate-btn, .add-picture-form .add-picture-btn{
+	border: 1px solid #1D6154;
+	border-radius: 30px;
+	color: #1D6154;
+	background-color: transparent;
+	font-size: 1rem;
+	line-height: 150%;
+	min-width: 170px;
+	padding: 10px;
+	margin: .4rem;
+	font-family: 'Work Sans' ;
+	cursor: pointer;
+}
+.filter-categories ul li input[type=button]:not(.filter-categories .btn-active):hover{
+	background-color: #1d615412;
+}
+.filter-categories ul li input[type=button]:active{
+	background-color: #6cb7aa12;
+}
+.filter-categories ul li input.btn-active{
+	background-color: #1D6154;
+	color: white;
+	font-weight: bold;
 }
 .gallery {
 	width: 100%;
@@ -137,31 +262,34 @@ li:hover {
 	width: 100%;
 
 }
-#contact {
+form {
 	width: 50%;
 margin: auto;
 }
-#contact > * {
-	text-align: center;
 
+.login-form{
+	margin: 22vh auto;
 }
-#contact h2{
+form > *, #contact > *, .modale > * {
+	text-align: center;
+}
+form h2{
 	margin-bottom: 20px;
 }
-#contact form {
+form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+input, select {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+label {
 	margin: 2em 0 1em 0;
 }
 #contact textarea {
@@ -185,4 +313,151 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+/*--------------- MODALE ---------------*/
+.overlay{
+	height: 477vh;
+	width: 100vw;
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.492);
+}
+.modale, .add-picture-form{
+	border: 1px solid black;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 2% 6%;
+	background-color: white;
+	width: 32vw;
+	border-radius: 20px ;
+	z-index: 2;
+	border: none;
+	/* display: flex !important; */
+}
+.modale .close-button{
+	text-align: end;
+	font-size: 1.2rem;
+	font-weight: bold;
+	cursor: pointer;
+}
+.modale h3{
+	color: black;
+	/* font-weight: normal; */
+	font-size: 1.6rem;
+}
+.modale .modale-gallery{
+	text-align: left;
+	margin: 10% auto 0 auto;
+	display: flex;
+	/* border: 1px solid black; */
+	flex-wrap: wrap;
+}
+.modale .modale-gallery img{
+	width: 5.8vw;
+	margin: 10px 4px;
+	cursor: pointer;
+}
+.modale .modale-gallery figure {
+	position: relative;
+}
 
+.modale .modale-gallery figure .icons{
+	position: absolute;
+	top: 6%;
+	right: 7%;
+	display: flex;
+}
+.modale .modale-gallery figure .icon{
+	width: 1.2vw;
+	cursor: pointer;
+	height: 2.4vh;
+}
+
+.modale .modale-gallery figure .icon-move{
+	opacity: 0;
+}
+.modale .modale-gallery figure:hover .icon-move {
+	opacity: 1;
+}
+.modale .modale-gallery hr{
+	border: 10px solid black !important;
+}
+.modale input[type=button], .add-picture-form .validate-btn, .add-picture-btn{
+	background-color: #1D6154;
+	color: white;
+	min-width: 50%;
+	font-weight: bold;
+	margin: 1.3vh auto;
+}
+
+.modale input[type=button].delete-btn{
+	color: red;
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+
+/*-------- MODALE ADD PICTURE --------*/
+.add-picture-form{
+	/* display: block; */
+	width: 40vw;
+	padding: 2%;
+}
+
+.add-picture-form fieldset legend{
+	font-size: 1.4rem;
+	margin: 5vh auto;
+}
+.add-picture-form fieldset label{
+	display: block;
+	text-align: left;
+	margin-left: 5vw;
+}
+.add-picture-form fieldset select, .add-picture-form fieldset input[type=text]{
+	width: 80%;
+	padding-left: 2%;
+}
+.add-picture-form fieldset .photo-wrapper{
+	/* border: 1px solid orange; */
+	background-color: #E8F1F6;
+	padding: 2%;
+}
+
+.add-picture-form .top-buttons{
+	display: flex;
+	justify-content: space-between;
+	font-size: 1.6rem;
+	cursor: pointer;
+}
+.add-picture-form .part-one .img-placeholder{
+	width: 15%;
+	display: block;
+	margin: 1vh auto;
+}
+.add-picture-form fieldset .photo-wrapper .add-picture-btn{
+	background-color: #CBD6DC;
+	color: #306685;
+	border: none;
+	min-width: 40%;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+.add-picture-form  hr{
+	width: 60%;
+	border-top: none;
+	border-bottom: 1px solid rgb(180, 176, 176);
+	margin: 6vh auto 4vh auto;
+}
+.add-picture-form .validate-btn{
+	min-width: 40%;
+	font-family: 'Work Sans';
+	font-weight: bold;
+	display: block;
+} 
+
+.add-picture-form .validate-btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+  }
