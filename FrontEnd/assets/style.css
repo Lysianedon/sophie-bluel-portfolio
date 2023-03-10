@@ -117,6 +117,7 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+	cursor: pointer;
 }
 
 li:hover {
@@ -127,7 +128,7 @@ li:hover {
 	align-items: center;
 }
 #introduction figure {
-	flex: 1
+	flex: 1;
 }
 #introduction img {
 	display: block;
@@ -136,7 +137,7 @@ li:hover {
 }
 
 #introduction article {
-	flex: 1
+	flex: 1;
 }
 #introduction h2 {
 	margin-bottom: 1em;
@@ -158,7 +159,7 @@ li:hover {
 }
 
 #introduction .modify{
-	margin: 2vh 0 0 8vh;
+	margin: 2vh 0 0 5vh;
 }
 .modify{
 	display: flex;
@@ -182,6 +183,7 @@ li:hover {
 .editor-mode img{
 	margin: 6px 13px 0 0;
 }
+
 .editor-mode p, .editor-mode button{
 	color: white;
 	display: inline;
@@ -200,6 +202,9 @@ li:hover {
 	border: none;
 	cursor: pointer;
 }
+#introduction .modif-pres{
+	margin: 0;
+}
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
@@ -211,7 +216,6 @@ li:hover {
 .projects-title-edition .modify{
 	margin: .6vh 0 0 2vw;
 }
-
 
 .hidden{
 	display: none;

@@ -5,6 +5,7 @@ const gallery = document.querySelector('.gallery');
 const filterButtons = Array.from(document.querySelectorAll('.filter-btn'));
 const submitButton = document.getElementById('submitLogin');
 const closeEditionModeButton = document.querySelector('.close-edition-mode');
+const loginBtn = document.querySelector('.login-btn');
 let isEditionModeActive = false;
 const gallerySettings = document.querySelector('.gallery-settings');
 // GALLERY MODALE
@@ -25,7 +26,39 @@ const validateAddFormButton = document.querySelector('.validate-btn');
 const titleNewProject = document.querySelector('#title');
 const categoryNewProject = document.querySelector('#categorie');
 
+//-------- Displaying the edition toolbar + options:-------- 
 
+document.addEventListener('DOMContentLoaded', () => {
+    //Retrieving the state of the tools from local storage
+    const isUserConnected = checkJwtToken("token");
+    if (isUserConnected) {
+        closeEditionModeButton.classList.remove('hidden');
+        loginBtn.classList.add('hidden');
+        const editionTools = Array.from(document.querySelectorAll('.edition-tools'));
+            editionTools.forEach(tool => {
+                tool.style.display = 'flex';
+            }); 
+        filterButtons.forEach(filter => filter.style.display = 'none');
+        } else {
+        closeEditionModeButton.classList.add('hidden');
+        loginBtn.classList.remove('hidden');
+        const editionTools = Array.from(document.querySelectorAll('.edition-tools'));
+            editionTools.forEach(tool => {
+                tool.style.display = 'none';
+            }); 
+    }
+});
+
+if (closeEditionModeButton) {
+    closeEditionModeButton.addEventListener('click', () => {
+        deleteCookie("token");
+        const editionTools = Array.from(document.querySelectorAll('.edition-tools'));
+        editionTools.forEach(tool => {
+            tool.style.display = "none";
+        });
+        isEditionModeActive = false;
+    })
+}
 //-------- RETRIEVE AND DISPLAY IMAGES ON THE PROJECT PAGE --------
 
 const fetchAllData = async () => {
@@ -128,9 +161,8 @@ const login = async (e) => {
 
     }).then(res => res.json())
     .then(res =>  {
-        // Checking the response code : if 200, the user is loggedin in, otherwise, an error message is displayed
+        // Checking the response : if token, the user is loggedin in, otherwise, an error message is displayed
         if (res.token) {
-            // console.log(res);
             //Storing the token in the cookies:
             document.cookie = `token=${encodeURIComponent(res.token)}`;
 
@@ -153,6 +185,7 @@ const login = async (e) => {
     }
 };
 
+// FOR POST AND DELETE METHODS:
 function checkJwtToken(tokenName) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -172,27 +205,6 @@ if (submitButton) {
     submitButton.addEventListener('click', (e) => {
         login(e);
     });
-}
-//Displaying the edition toolbar + options:
-document.addEventListener('DOMContentLoaded', () => {
-    //Retrieving the state of the tools from local storage
-    const isUserConnected = checkJwtToken("token");
-
-    const editionTools = Array.from(document.querySelectorAll('.edition-tools'));
-        editionTools.forEach(tool => {
-            tool.style.display = `${isUserConnected ? 'flex' : 'none'}`;
-        }); 
-});
-
-if (closeEditionModeButton) {
-    closeEditionModeButton.addEventListener('click', () => {
-        deleteCookie("token");
-        const editionTools = Array.from(document.querySelectorAll('.edition-tools'));
-        editionTools.forEach(tool => {
-            tool.style.display = "none";
-        });
-    })
-
 }
 
 //----------- HANDLE MODALE FUNCTIONS ----------------
@@ -230,19 +242,21 @@ const closeAddForm = () => {
     fileUploadButton.removeEventListener('change', handleFileUpload);
 }
 
-overlay.addEventListener('click', () => {
-    pictureForm.classList.add('hidden');
-    modale.classList.add('hidden');
-    overlay.classList.add('hidden'); 
-    titleNewProject.value  = "";
-    categoryNewProject.value = 0;
-    addPictureToGalleryButton.classList.remove('hidden');
-    fileFormatsLegend.classList.remove('hidden');
-    imagePlaceholder.src = "./assets/icons/img-placeholder.png";
-    validateAddFormButton.disabled = true;
-    // Remove the change event listener from fileUploadButton
-    fileUploadButton.removeEventListener('change', handleFileUpload);
-})
+if (overlay) {
+    overlay.addEventListener('click', () => {
+        pictureForm.classList.add('hidden');
+        modale.classList.add('hidden');
+        overlay.classList.add('hidden'); 
+        titleNewProject.value  = "";
+        categoryNewProject.value = 0;
+        addPictureToGalleryButton.classList.remove('hidden');
+        fileFormatsLegend.classList.remove('hidden');
+        imagePlaceholder.src = "./assets/icons/img-placeholder.png";
+        validateAddFormButton.disabled = true;
+        // Remove the change event listener from fileUploadButton
+        fileUploadButton.removeEventListener('change', handleFileUpload);
+    }) 
+}
 const resetFormAndGoBackToModaleGallery = () => {
     modale.classList.remove('hidden');
     pictureForm.classList.add('hidden');
@@ -383,6 +397,7 @@ const addNewProject = async (e) => {
             if (data.id) {
                 fetchAllData();
                 displayNotification("Projet ajouté", false);
+                
                 return null;
             }
         });
