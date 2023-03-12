@@ -26,11 +26,28 @@ const validateAddFormButton = document.querySelector('.validate-btn');
 const titleNewProject = document.querySelector('#title');
 const categoryNewProject = document.querySelector('#categorie');
 
+//-------- Handling token in local storage:-------- 
+const storeToken = (token) => {
+    localStorage.setItem('token', token);
+}
+
+const checkToken = (token) => {
+    return !!localStorage.getItem(token);
+}
+
+const getToken = (token) => {
+    return localStorage.getItem(token);
+}
+
+const removeToken = (token) => {
+    localStorage.removeItem(token);
+}
+
 //-------- Displaying the edition toolbar + options:-------- 
 
 document.addEventListener('DOMContentLoaded', () => {
     //Retrieving the state of the tools from local storage
-    const isUserConnected = checkJwtToken("token");
+    const isUserConnected = checkToken("token");
     if (isUserConnected) {
         closeEditionModeButton.classList.remove('hidden');
         loginBtn.classList.add('hidden');
@@ -51,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 if (closeEditionModeButton) {
     closeEditionModeButton.addEventListener('click', () => {
-        deleteCookie("token");
+        removeToken("token");
         const editionTools = Array.from(document.querySelectorAll('.edition-tools'));
         editionTools.forEach(tool => {
             tool.style.display = "none";
@@ -79,17 +96,18 @@ fetchAllData();
 const addImagesToGallery = async () => {
     for (let i = 0; i < filteredImages.length; i++) {
         const img = filteredImages[i];
-        addImageToDOM(img.imageUrl, img.title);
+        addImageToDOM(img.imageUrl, img.title, img.id);
     }
 }
 
-const addImageToDOM = (imgUrl, figCaptionText) => {
+const addImageToDOM = (imgUrl, figCaptionText,id = null) => {
     let figure = document.createElement("figure");
     let image = document.createElement("img");
     let figCaption = document.createElement("figCaption");
 
     image.src = imgUrl;
     image.alt = figCaptionText;
+    image.id = id;
     figCaption.innerText = figCaptionText;
     figure.appendChild(image);
     figure.appendChild(figCaption);
@@ -140,6 +158,7 @@ const displayNotification = (textContent, error = true, time = 1500) => {
 }
 
 // -------------- LOGIN FUNCTION -------------------
+
 const login = async (e) => {
     e.preventDefault();
     const email = document.querySelector('#email').value;
@@ -163,9 +182,9 @@ const login = async (e) => {
     .then(res =>  {
         // Checking the response : if token, the user is loggedin in, otherwise, an error message is displayed
         if (res.token) {
-            //Storing the token in the cookies:
-            document.cookie = `token=${encodeURIComponent(res.token)}`;
-
+            //Storing the token in the local storage:
+            // document.cookie = `token=${encodeURIComponent(res.token)}`;
+            storeToken(res.token);
             displayNotification('Connecté', false, 1300);
             // Redirecting to the projects page
             setTimeout(() => {
@@ -178,7 +197,6 @@ const login = async (e) => {
         }
         return null;
     })
-
     } catch (error) {
         displayNotification('Un problème est survenu. Veuillez réessayer', true);
         return console.error(error);
@@ -346,7 +364,7 @@ const addImageToModaleGallery = (imgUrl, imgAltInfos, imgId) => {
 
 const deleteImageFromGallery = async (id) => { 
     try {
-        const token = checkJwtToken("token")[1]; 
+        const token = getToken("token"); 
         // console.log(token);
         const url = `http://localhost:5678/api/works/${id}`;
         const options = {
@@ -355,7 +373,15 @@ const deleteImageFromGallery = async (id) => {
         };
         const res = fetch(url, options).then(res => res.json());
         // console.log(res);
-        fetchAllData();
+        const index = filteredImages.findIndex(image => image.id === id);
+        if (index !== -1) {
+            filteredImages.splice(index, 1);
+        }
+        addFilteredImagesToModaleGallery();
+        const imageElement = document.getElementById(`${id}`);
+        if (imageElement) {
+            imageElement.parentNode.remove();
+        }
         displayNotification("Image supprimée", false);
     } catch (error) {
         displayNotification('Un problème est survenu. Veuillez réessayer', true);
@@ -386,7 +412,7 @@ const addNewProject = async (e) => {
     formData.append("image", image);
 
     try {
-        const token = checkJwtToken("token")[1]; 
+        const token = getToken("token"); 
         const url = "http://localhost:5678/api/works/";
         const options = {
         method: "POST",
@@ -395,9 +421,11 @@ const addNewProject = async (e) => {
         };
         fetch(url, options).then(res => res.json()).then(data => {
             if (data.id) {
-                fetchAllData();
+                addImageToModaleGallery(data.imageUrl, data.title, data.id);
+                addImageToDOM(data.imageUrl, data.title, data.id);
+                allImages.push(data);
                 displayNotification("Projet ajouté", false);
-                
+                resetFormAndGoBackToModaleGallery();
                 return null;
             }
         });

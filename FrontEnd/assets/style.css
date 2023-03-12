@@ -261,14 +261,12 @@ li:hover {
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
 }
-
 .gallery img {
 	width: 100%;
-
 }
 form {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 
 .login-form{
@@ -285,6 +283,10 @@ form {
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
+}
+form .forgotten-password-link{
+	text-decoration: underline;
+	color: #3D3D3D;
 }
 
 input, select {
